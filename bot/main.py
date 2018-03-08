@@ -1,11 +1,13 @@
 import requests
 from misc import TOKEN
+import crypto
 
 URL = 'https://api.telegram.org/bot' + TOKEN + '/'
 
 def getUpdetes():
     url = URL + 'getupdates'
     response = requests.get(url)
+
     return response.json()
 
 def messageData(response):
