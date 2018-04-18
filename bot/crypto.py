@@ -4,16 +4,16 @@ def caesar(text, key, decode=False):
     final = ""
     for symbol in text:
         if not decode:
-            if (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.islower():
+            if symbol.islower():
                 final += chr((ord(symbol) - 97 + key + 26) % 26 + 97)
-            elif (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.isupper():
+            elif symbol.isupper():
                 final += chr((ord(symbol) - 65 + key + 26) % 26 + 65)
             else:
                 final += symbol
         else:
-            if (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.islower():
+            if symbol.islower():
                 final += chr((ord(symbol) - 97 - key + 26) % 26 + 97)
-            elif (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.isupper():
+            elif symbol.isupper():
                 final += chr(((ord(symbol) - 65 - key + 26) % 26) + 65)
             else:
                 final += symbol
@@ -39,20 +39,21 @@ def vigenere(text, key, decode=False):
 
     for index, symbol in enumerate(text):
         if not decode:
-            if (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.islower():
+            if symbol.islower():
                 final += chr((ord(symbol) - 97 + (ord(new_key[index]) - 97) + 26) % 26 + 97)
-            elif (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.isupper():
+            elif symbol.isupper():
                 final += chr((ord(symbol) - 65 + (ord(new_key[index]) - 97) + 26) % 26 + 65)
             else:
                 final += symbol
         else:
-            if (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.islower():
+            if symbol.islower():
                 final += chr((ord(symbol) - 97 - (ord(new_key[index]) - 97) + 26) % 26 + 97)
-            elif (symbol != ' ' or symbol != '!' or symbol != ',' or symbol != '.') and symbol.isupper():
+            elif symbol.isupper():
                 final += chr(((ord(symbol) - 65 - (ord(new_key[index]) - 97) + 26) % 26) + 65)
             else:
                 final += symbol
     return final
 
-def hash(text, decode=False):
-    pass
+def hash(text):
+    result = sha256(bytes(text, encoding='utf-8'))
+    return result.hexdigest()
