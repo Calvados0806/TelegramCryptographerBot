@@ -1,6 +1,8 @@
+"module which contains some crypto functions"
 from hashlib import sha256
 
 def caesar(text, key, decode=False):
+    "encode or decode message using caesar cipher"
     final = ""
     for symbol in text:
         if not decode:
@@ -20,16 +22,17 @@ def caesar(text, key, decode=False):
     return final
 
 def vigenere(text, key, decode=False):
+    "encode or decode text using vigenere cipher"
     final = ""
     new_key = ''
     i, j = 0, 0
 
     while i < len(text):
         while j < len(key):
-            if (i < len(text) and j < len(key) and (text[i] == ' ' or text[i] == ',' or text[i] == '!')):
+            if i < len(text) and j < len(key):
                 new_key += text[i]
                 i += 1
-            elif (i < len(text) and j < len(key) and (text[i] != ' ' or text[i] != ',' or text[i] != '!')):
+            elif i < len(text) and j < len(key):
                 new_key += key[j]
                 i += 1
                 j += 1
@@ -54,6 +57,7 @@ def vigenere(text, key, decode=False):
                 final += symbol
     return final
 
-def hash(text):
+def hash_(text):
+    "hash some text using standard sha256"
     result = sha256(bytes(text, encoding='utf-8'))
     return result.hexdigest()
