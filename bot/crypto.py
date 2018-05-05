@@ -47,10 +47,10 @@ def vigenere(text, key, decode=False, ascii_=True):
 
     while i < len(text):
         while j < len(key):
-            if i < len(text) and j < len(key):
+            if (i < len(text) and j < len(key) and (text[i] == ' ' or text[i] == ',' or text[i] == '!')):
                 new_key += text[i]
                 i += 1
-            elif i < len(text) and j < len(key):
+            elif (i < len(text) and j < len(key) and (text[i] != ' ' or text[i] != ',' or text[i] != '!')):
                 new_key += key[j]
                 i += 1
                 j += 1
