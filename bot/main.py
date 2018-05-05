@@ -53,7 +53,7 @@ def main():
 #             send_message(chat_id, standard_message)
 #     else:
 #         send_message(data['chat_id'], standard_message)
-    pass
+    print(crypto.vigenere("Hello", "int", decode=True))
 
 if __name__ == '__main__':
     main()

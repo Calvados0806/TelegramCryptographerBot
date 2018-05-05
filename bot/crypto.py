@@ -1,31 +1,49 @@
 "module which contains some crypto functions"
 from hashlib import sha256
 
-def caesar(text, key, decode=False):
+def caesar(text, key, decode=False, ascii_=True):
     "encode or decode message using caesar cipher"
+    if (ascii_):
+        shift_lower = 97
+        shift_upper = 65
+        symb_count = 26
+    else:
+        shift_lower = 1072
+        shift_upper = 1040
+        symb_count = 33
+
     final = ""
     for symbol in text:
         if not decode:
             if symbol.islower():
-                final += chr((ord(symbol) - 97 + key + 26) % 26 + 97)
+                final += chr((ord(symbol) - shift_lower + key + symb_count) % symb_count + shift_lower)
             elif symbol.isupper():
-                final += chr((ord(symbol) - 65 + key + 26) % 26 + 65)
+                final += chr((ord(symbol) - shift_upper + key + symb_count) % symb_count + shift_upper)
             else:
                 final += symbol
         else:
             if symbol.islower():
-                final += chr((ord(symbol) - 97 - key + 26) % 26 + 97)
+                final += chr((ord(symbol) - shift_lower - key + symb_count) % symb_count + shift_lower)
             elif symbol.isupper():
-                final += chr(((ord(symbol) - 65 - key + 26) % 26) + 65)
+                final += chr(((ord(symbol) - shift_upper - key + symb_count) % symb_count) + shift_upper)
             else:
                 final += symbol
     return final
 
-def vigenere(text, key, decode=False):
+def vigenere(text, key, decode=False, ascii_=True):
     "encode or decode text using vigenere cipher"
     final = ""
     new_key = ''
     i, j = 0, 0
+
+    if (ascii_):
+        shift_lower = 97
+        shift_upper = 65
+        symb_count = 26
+    else:
+        shift_lower = 1072
+        shift_upper = 1040
+        symb_count = 33
 
     while i < len(text):
         while j < len(key):
@@ -43,16 +61,16 @@ def vigenere(text, key, decode=False):
     for index, symbol in enumerate(text):
         if not decode:
             if symbol.islower():
-                final += chr((ord(symbol) - 97 + (ord(new_key[index]) - 97) + 26) % 26 + 97)
+                final += chr((ord(symbol) - shift_lower + (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_lower)
             elif symbol.isupper():
-                final += chr((ord(symbol) - 65 + (ord(new_key[index]) - 97) + 26) % 26 + 65)
+                final += chr((ord(symbol) - shift_upper + (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_upper)
             else:
                 final += symbol
         else:
             if symbol.islower():
-                final += chr((ord(symbol) - 97 - (ord(new_key[index]) - 97) + 26) % 26 + 97)
+                final += chr((ord(symbol) - shift_lower - (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_lower)
             elif symbol.isupper():
-                final += chr(((ord(symbol) - 65 - (ord(new_key[index]) - 97) + 26) % 26) + 65)
+                final += chr(((ord(symbol) - shift_upper - (ord(new_key[index]) - shift_lower) + symb_count) % symb_count) + shift_upper)
             else:
                 final += symbol
     return final
