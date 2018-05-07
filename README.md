@@ -1,6 +1,6 @@
 # TelegramCryptographerBot
 ![alt text](./Logo.png)
-# __Version Beta 1.0 (07.03.2018)__
+# __Version Beta 2.0 (07.03.2018)__
 ---
 Telegram Bot that encode or decode your message.
 ***
