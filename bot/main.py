@@ -53,7 +53,7 @@ def main():
 #             send_message(chat_id, standard_message)
 #     else:
 #         send_message(data['chat_id'], standard_message)
-    print(crypto.caesar("Привіт", 3, False, False))
+    pass
 
 if __name__ == '__main__':
     main()

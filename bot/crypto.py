@@ -10,7 +10,7 @@ def caesar(text, key, decode=False, ascii_=True):
     else:
         shift_lower = 1072
         shift_upper = 1040
-        symb_count = 33
+        symb_count = 40
 
     final = ""
     for symbol in text:
@@ -43,7 +43,7 @@ def vigenere(text, key, decode=False, ascii_=True):
     else:
         shift_lower = 1072
         shift_upper = 1040
-        symb_count = 33
+        symb_count = 40
 
     while i < len(text):
         while j < len(key):
