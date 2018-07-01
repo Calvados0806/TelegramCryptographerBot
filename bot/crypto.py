@@ -1,8 +1,9 @@
 "module which contains some crypto functions"
 from hashlib import sha256
+from itertools import cycle
 
 class Shift(object):
-    def __init__(self, char):
+    def __init__(self, char=''):
         self._char = char
         self._ascii = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
@@ -44,78 +45,51 @@ class Shift(object):
     def is_symbol(self):
         return self._char.lower() in self._cyrillic or self._char.lower() in self._ascii
 
-def caesar(text, key, decode=False, ascii_=True):
-    "encode or decode message using caesar cipher"
-    if (ascii_):
-        shift_lower = 97
-        shift_upper = 65
-        symb_count = 26
-    else:
-        shift_lower = 1072
-        shift_upper = 1040
-        symb_count = 40
+    def sid(self):
+        try:
+            sid = self._cyrillic.index(self._char.lower())
+            return sid
+        except ValueError:
+            try:
+                sid = self._ascii.index(self._char.lower())
+                return sid
+            except ValueError:
+                return 0
 
+def caesar(text, key, decode=False):
+    "encode or decode message using caesar cipher"
     final = ""
+    symb = Shift()
     for symbol in text:
+        symb.change_char(symbol)
         if not decode:
-            if symbol.islower():
-                final += chr((ord(symbol) - shift_lower + key + symb_count) % symb_count + shift_lower)
-            elif symbol.isupper():
-                final += chr((ord(symbol) - shift_upper + key + symb_count) % symb_count + shift_upper)
-            else:
-                final += symbol
+            final += symb.shift(key)
         else:
-            if symbol.islower():
-                final += chr((ord(symbol) - shift_lower - key + symb_count) % symb_count + shift_lower)
-            elif symbol.isupper():
-                final += chr(((ord(symbol) - shift_upper - key + symb_count) % symb_count) + shift_upper)
-            else:
-                final += symbol
+            final += symb.shift(-key)
     return final
 
-def vigenere(text, key, decode=False, ascii_=True):
+def vigenere(text, key, decode=False):
     "encode or decode text using vigenere cipher"
     final = ""
-    new_key = ''
-    i, j = 0, 0
+    cycle_key = ""
+    symb1 = Shift()
+    symb2 = Shift()
+    key_iter = cycle(key)
 
-    if (ascii_):
-        shift_lower = 97
-        shift_upper = 65
-        symb_count = 26
-    else:
-        shift_lower = 1072
-        shift_upper = 1040
-        symb_count = 40
-
-    while i < len(text):
-        while j < len(key):
-            if (i < len(text) and j < len(key) and (text[i] == ' ' or text[i] == ',' or text[i] == '!')):
-                new_key += text[i]
-                i += 1
-            elif (i < len(text) and j < len(key) and (text[i] != ' ' or text[i] != ',' or text[i] != '!')):
-                new_key += key[j]
-                i += 1
-                j += 1
-            else:
-                break
-        j = 0
-
-    for index, symbol in enumerate(text):
-        if not decode:
-            if symbol.islower():
-                final += chr((ord(symbol) - shift_lower + (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_lower)
-            elif symbol.isupper():
-                final += chr((ord(symbol) - shift_upper + (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_upper)
-            else:
-                final += symbol
+    for s in text:
+        symb1.change_char(s)
+        if symb1.is_symbol():
+            cycle_key += next(key_iter).lower()
         else:
-            if symbol.islower():
-                final += chr((ord(symbol) - shift_lower - (ord(new_key[index]) - shift_lower) + symb_count) % symb_count + shift_lower)
-            elif symbol.isupper():
-                final += chr(((ord(symbol) - shift_upper - (ord(new_key[index]) - shift_lower) + symb_count) % symb_count) + shift_upper)
-            else:
-                final += symbol
+            cycle_key += s
+
+    for stext, skey in zip(text, cycle_key):
+        symb2.change_char(stext)
+        symb1.change_char(skey)
+        if not decode:
+            final += symb2.shift(symb1.sid())
+        else:
+            final += symb2.shift(-symb1.sid())
     return final
 
 def hash_(text):
