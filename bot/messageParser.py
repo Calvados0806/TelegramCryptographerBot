@@ -6,10 +6,7 @@ def get_info(message):
 	command = get_command(message)
 	key = get_key(message)
 	text = get_text(message)
-	if command and key and text:
-		return {"command": command, "key": key, "text": text}
-	else:
-		return None
+	return {"command": command, "key": key, "text": text}
 
 def get_command(message):
 	"returns command from message"

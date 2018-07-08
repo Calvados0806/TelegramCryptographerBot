@@ -57,10 +57,12 @@ def handle_command(info):
     command = info['command']
     key = info['key']
     text = info['text']
-    if command == '/help' or text == None:
+    if command == '/help':
         return helper
     elif command == '/about':
         return about
+    elif not text:
+        return helper
     elif command == '/ce':
         try:
             ikey = int(key)
