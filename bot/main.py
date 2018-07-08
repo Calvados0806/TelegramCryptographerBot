@@ -54,9 +54,9 @@ def send_message(chat_id, text="Wait a second..."):
     return response.json()
 
 def handle_command(info):
-    command = info.group('command')
-    key = info.group('key')
-    text = info.group('text')
+    command = info['command']
+    key = info['key']
+    text = info['text']
     if command == '/help' or text == None:
         return helper
     elif command == '/about':
@@ -82,7 +82,7 @@ def handle_command(info):
         answer = crypto.vigenere(text, key, decode=True)
         return answer
     elif command == '/hash':
-        answer = crypto.hash_(info.group('another'))
+        answer = crypto.hash_(key)
         return answer
 
 @app.route('/', methods=['POST', 'GET'])
