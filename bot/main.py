@@ -22,6 +22,14 @@ Use this pattern for correct bot working:
 /vd <key> <message> - to decrypt message using vigenere cipher
 /hash <message> - to hash your message
 """
+about =\
+"""
+My name is Vitaliy.
+I'm Python Developer.
+My contacts:
+Email - flamaster0806@gmail.com
+Telegram - https://telegram.me/calvados0806
+"""
 
 def get_updates():
     "get new json-object, that contains new user's data and return it"
@@ -40,8 +48,10 @@ def message_data(response):
 
 def send_message(chat_id, text="Wait a second..."):
     "send some message to user using chat_id"
-    url = URL + 'sendmessage?chat_id={}&text={}'.format(chat_id, text)
-    requests.get(url)
+    url = URL + 'sendmessage'
+    data = {"chat_id": chat_id, "text": text}
+    response = requests.post(url, json=data)
+    return response.json()
 
 def handle_command(info):
     command = info.group('command')
@@ -49,6 +59,8 @@ def handle_command(info):
     text = info.group('text')
     if command == '/help' or text == None:
         return helper
+    elif command == '/about':
+        return about
     elif command == '/ce':
         try:
             ikey = int(key)
