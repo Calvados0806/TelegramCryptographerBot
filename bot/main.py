@@ -28,6 +28,7 @@ My name is Vitaliy.
 I'm Python Developer.
 My contacts:
 Email - flamaster0806@gmail.com
+Github Profile - https://github.com/Calvados0806
 Telegram - https://telegram.me/calvados0806
 """
 
@@ -61,6 +62,9 @@ def handle_command(info):
         return helper
     elif command == '/about':
         return about
+    elif command == '/hash':
+        answer = crypto.hash_(key)
+        return answer
     elif not text:
         return helper
     elif command == '/ce':
@@ -82,9 +86,6 @@ def handle_command(info):
         return answer
     elif command == '/vd':
         answer = crypto.vigenere(text, key, decode=True)
-        return answer
-    elif command == '/hash':
-        answer = crypto.hash_(key)
         return answer
 
 @app.route('/', methods=['POST', 'GET'])
