@@ -13,24 +13,27 @@ app = Flask(__name__)
 sslify = SSLify(app)
 
 URL = 'https://api.telegram.org/bot' + TOKEN + '/'
-helper =\
-"""
-Use this pattern for correct bot working:
-/ce <number> <message> - to encrypt message using caesar cipher
-/cd <number> <message> - to decrypt message using caesar cipher
-/ve <key> <message> - to encrypt message using vigenere cipher
-/vd <key> <message> - to decrypt message using vigenere cipher
-/hash <message> - to hash your message
-"""
-about =\
-"""
-My name is Vitaliy.
-I'm Python Developer.
-My contacts:
-Email - flamaster0806@gmail.com
-Github Profile - https://github.com/Calvados0806
-Telegram - https://telegram.me/calvados0806
-"""
+start_message = (
+     "Welcome to BotCryptographer.\n"
+     "For getting information about commands -\n"
+     "use /help.\n"
+)
+helper = (
+     "Use this pattern for correct bot working:\n"
+     "/ce <number> <message> - to encrypt message using caesar cipher\n"
+     "/cd <number> <message> - to decrypt message using caesar cipher\n"
+     "/ve <key> <message> - to encrypt message using vigenere cipher\n"
+     "/vd <key> <message> - to decrypt message using vigenere cipher\n"
+     "/hash <message> - to hash your message\n"
+)
+about = (
+     "My name is Vitaliy.\n"
+     "I'm Python Developer.\n"
+     "My contacts:\n"
+     "Email - flamaster0806@gmail.com\n"
+     "Github Profile - https://github.com/Calvados0806\n"
+     "Telegram - https://telegram.me/calvados0806\n"
+)
 
 def get_updates():
     "get new json-object, that contains new user's data and return it"
@@ -58,12 +61,14 @@ def handle_command(info):
     command = info['command']
     key = info['key']
     text = info['text']
-    if command == '/help':
+    if command == '/start':
+        return start_message
+    elif command == '/help':
         return helper
     elif command == '/about':
         return about
     elif command == '/hash':
-        answer = crypto.hash_(key)
+        answer = crypto.hash_("{0} {1}".format(key, text))
         return answer
     elif not text:
         return helper
